@@ -1,5 +1,5 @@
 {
-    "name": "assignments-remove-unwanted",
+    "name": "assignments-delete-unwanted",
     "version": "1.0.0",
     "description": "Delete unwatned assignments",
     "main": "main.js",
@@ -17,13 +17,13 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/byuitechops/assignments-remove-unwanted.git"
+        "url": "git+https://github.com/byuitechops/assignments-delete-unwanted.git"
     },
     "author": "Zachary Williams, Daniel Green",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/byuitechops/assignments-remove-unwanted/issues"
+        "url": "https://github.com/byuitechops/assignments-delete-unwanted/issues"
     },
-    "homepage": "https://github.com/byuitechops/assignments-remove-unwanted#readme",
+    "homepage": "https://github.com/byuitechops/assignments-delete-unwanted#readme",
     "childType": "postImport"
 }
