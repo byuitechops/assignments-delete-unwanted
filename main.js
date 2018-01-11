@@ -15,20 +15,6 @@ module.exports = (course, stepCallback) => {
 
     course.addModuleReport('assignments-delete-unwanted');
 
-    /******************************
-     * deletes a single assignment
-     ******************************/
-    function deleteAssignment(assignment, cb) {
-        canvas.delete(`/api/v1/courses/${course.info.canvasOU}/assignments/${assignment.id}`, (err) => {
-            if (err) {
-                cb(err);
-                return;
-            }
-            course.success('assignments-delete-unwanted', `assignments-delete-unwanted deleted ${assignment.name}`);
-            cb(null);
-        });
-    }
-
     /**********************************************
      * gets all assignments in course, and filters
      * them according to tests array
@@ -41,12 +27,6 @@ module.exports = (course, stepCallback) => {
                     toDelete = true;
             });
             return toDelete;
-        });
-        asyncLib.each(assignmentsToDelete, deleteAssignment, (err) => {
-            if (err) {
-                course.throwErr('assignments-delete-unwanted', err);
-            }
-            stepCallback(null, course);
         });
     });
 };
