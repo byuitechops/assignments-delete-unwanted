@@ -29,19 +29,29 @@ module.exports = (course, stepCallback) => {
         });
     }
 
+    /* set timeout is for testing. The API returns 0 assignments without it */
+    // setTimeout(() => {
+
     /**********************************************
      * gets all assignments in course, and filters
      * them according to tests array
      **********************************************/
     canvas.getAssignments(course.info.canvasOU, (err, assignments) => {
+        if (err) {
+            course.throwErr('assignments-delete-unwanted', err);
+            stepCallback(null, course);
+            return;
+        }
+        console.log(`Assignments found: ${assignments.length}`);
         var assignmentsToDelete = assignments.filter((assignment) => {
-            var toDelete = false; //true to delete
-            tests.forEach((test) => {
-                if (test.test(assignment.name))
-                    toDelete = true;
+            // console.log('assignment:', JSON.stringify(assignment, null, 2));
+            /* This should be the same as the code below */
+            return tests.some((regex) => {
+                return regex.test(assignment.name);
             });
-            return toDelete;
         });
+
+        console.log(`Assignments to delete: ${assignmentsToDelete.length}`);
         asyncLib.each(assignmentsToDelete, deleteAssignment, (err) => {
             if (err) {
                 course.throwErr('assignments-delete-unwanted', err);
@@ -49,4 +59,5 @@ module.exports = (course, stepCallback) => {
             stepCallback(null, course);
         });
     });
+    // }, 15000);
 };
