@@ -13,8 +13,6 @@ module.exports = (course, stepCallback) => {
         /\[co~\d*\]/i
     ];
 
-    course.addModuleReport('assignments-delete-unwanted');
-
     /******************************
      * deletes a single assignment
      ******************************/
@@ -24,7 +22,7 @@ module.exports = (course, stepCallback) => {
                 cb(err);
                 return;
             }
-            course.success('assignments-delete-unwanted', `assignments-delete-unwanted deleted ${assignment.name}`);
+            course.log('Deleted Assignments', {'Assignment Deleted': assignment.name});
             cb(null);
         });
     }
@@ -38,23 +36,21 @@ module.exports = (course, stepCallback) => {
      **********************************************/
     canvas.getAssignments(course.info.canvasOU, (err, assignments) => {
         if (err) {
-            course.throwErr('assignments-delete-unwanted', err);
+            course.error(err);
             stepCallback(null, course);
             return;
         }
         console.log(`Assignments found: ${assignments.length}`);
         var assignmentsToDelete = assignments.filter((assignment) => {
-            // console.log('assignment:', JSON.stringify(assignment, null, 2));
-            /* This should be the same as the code below */
             return tests.some((regex) => {
                 return regex.test(assignment.name);
             });
         });
 
-        console.log(`Assignments to delete: ${assignmentsToDelete.length}`);
+        // course.message(`Assignments to delete: ${assignmentsToDelete.length}`);
         asyncLib.each(assignmentsToDelete, deleteAssignment, (err) => {
             if (err) {
-                course.throwErr('assignments-delete-unwanted', err);
+                course.error(err);
             }
             stepCallback(null, course);
         });
