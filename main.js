@@ -22,13 +22,13 @@ module.exports = (course, stepCallback) => {
                 cb(err);
                 return;
             }
-            course.log('Assignments Deleted', {
-                'Name': assignment.name,
-                'ID': assignment.id
-            });
+            course.log('Deleted Assignments', {'Assignment Deleted': assignment.name});
             cb(null);
         });
     }
+
+    /* set timeout is for testing. The API returns 0 assignments without it */
+    // setTimeout(() => {
 
     /**********************************************
      * gets all assignments in course, and filters
@@ -41,13 +41,12 @@ module.exports = (course, stepCallback) => {
             return;
         }
         var assignmentsToDelete = assignments.filter((assignment) => {
-            var toDelete = false; //true to delete
-            tests.forEach((test) => {
-                if (test.test(assignment.name))
-                    toDelete = true;
+            return tests.some((regex) => {
+                return regex.test(assignment.name);
             });
-            return toDelete;
         });
+
+        // course.message(`Assignments to delete: ${assignmentsToDelete.length}`);
         asyncLib.each(assignmentsToDelete, deleteAssignment, (err) => {
             if (err) {
                 course.error(err);
@@ -55,4 +54,5 @@ module.exports = (course, stepCallback) => {
             stepCallback(null, course);
         });
     });
+    // }, 15000);
 };
