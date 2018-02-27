@@ -1,11 +1,9 @@
-/*eslint-env node, es6*/
-
 /* Module Description */
+/* Deletes unwanted assignments from a course */
 
 /* Put dependencies here */
 const canvas = require('canvas-wrapper'),
     asyncLib = require('async');
-
 
 module.exports = (course, stepCallback) => {
     /* array of regEx assignment types to delete */
@@ -26,9 +24,6 @@ module.exports = (course, stepCallback) => {
             cb(null);
         });
     }
-
-    /* set timeout is for testing. The API returns 0 assignments without it */
-    // setTimeout(() => {
 
     /**********************************************
      * gets all assignments in course, and filters
@@ -54,5 +49,4 @@ module.exports = (course, stepCallback) => {
             stepCallback(null, course);
         });
     });
-    // }, 15000);
 };
